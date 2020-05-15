@@ -1,0 +1,162 @@
+.loading {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #333;
+
+  &__main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height: 400px;
+    margin: 0 50px;
+  }
+}
+
+/**
+* 需要保持li和父级高度一致
+* 每个li分别延时执行动画，通过transformY来形成跳动的视差
+* hue-rotate实现li不同的颜色展示
+*/
+.loading__heart {
+  display: flex;
+  height: 10px; // 需要保持父级高度和子级一致
+
+  li {
+    width: 10px;
+    height: 100%;
+    border-radius: 5px;
+    margin: 0 6px;
+    background-color: #3c9;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+  }
+
+  @for $i from 1 to 10 {
+    li:nth-of-type(#{$i}) {
+      filter: hue-rotate($i * 20deg);
+      animation-delay: ($i - 2) * 40ms;
+    }
+  }
+
+  @mixin animation_line($i, $h, $y) {
+    @keyframes animation_line-#{$i} {
+      0%,
+      10%,
+      90%,
+      100% {
+        height: 10px;
+      }
+
+      45%,
+      55% {
+        height: #{$h}px;
+        transform: translate(0, #{$y}px);
+      }
+    }
+    @content
+  };
+
+  @include animation_line(1, 30, -15) {
+    &-line1 {
+      animation-name: animation_line-1;
+    }
+  }
+
+  @include animation_line(2, 60, -30) {
+    &-line2 {
+      animation-name: animation_line-2;
+    }
+  }
+
+  @include animation_line(3, 80, -40) {
+    &-line3 {
+      animation-name: animation_line-3;
+    }
+  }
+
+  @include animation_line(4, 90, -30) {
+    &-line4 {
+      animation-name: animation_line-4;
+    }
+  }
+
+  @include animation_line(5, 90, -20) {
+    &-line5 {
+      animation-name: animation_line-5;
+    }
+  }
+}
+
+/**
+* radial-gradient: 形状 x y位置，起始颜色，过渡颜色 大小，衔接颜色 开始位置
+* 多层颜色叠加过渡时，如果有重合的部分需要叠加时被覆盖，先定义的层就需要transparent
+* box-shadow: x偏移量 | y偏移量 | 阴影模糊半径 | 阴影扩散半径 | 阴影颜色 
+*/
+.loading__ghost {
+  $body: #fff;
+  $eye: #000;
+  $aniTime: 2s;
+
+  position: relative;
+  width: 80px;
+  height: 120px;
+  background:
+    radial-gradient(circle at 60px 40px, $eye, $eye 7px, transparent 7px),
+    radial-gradient(circle at 40px 40px, $eye, $eye 7px, transparent 7px),
+    radial-gradient(circle at 50px 50px, $body, $body);
+  border-radius: 40px 40px 60px 20px;
+  transform: skewX(-10deg);
+  animation: move__main $aniTime infinite ease-out;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    background: $body;
+    border-radius: 50%;
+    left: -10px;
+    box-shadow: 0 0 0 1px $body;
+  }
+
+  &::before {
+    width: 20px;
+    height: 20px;
+    top: 50px;
+    animation: move__tail1 $aniTime infinite ease-in;
+  }
+
+  &::after {
+    width: 30px;
+    height: 25px;
+    top: 95px;
+    animation: move__tail2 $aniTime infinite ease-in;
+  }
+
+  @keyframes move__main {
+    42% {
+      transform: skewX(-10deg) translate(50px, 0);
+    }
+  }
+
+  @keyframes move__tail1 {
+    80%,
+    100% {
+      box-shadow: -60px 0 0 .5px rgba(255, 255, 255, .5);
+    }
+  }
+
+  @keyframes move__tail2 {
+    80%,
+    100% {
+      box-shadow: -100px 0 0 .5px rgba(255, 255, 255, .2);
+    }
+  }
+}
+
+.box {
+  border: 20px solid #fff;
+  box-shadow: 5px 2px 2px 3px rgba(255, 255, 255, .5);
+}
