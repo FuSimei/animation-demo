@@ -1,6 +1,6 @@
 // context/index
 import React, { createContext, useReducer } from 'react'
-import Count from '../component/Count'
+// import Count from '../component/Count'
 
 const defaultStore = {
   props: {

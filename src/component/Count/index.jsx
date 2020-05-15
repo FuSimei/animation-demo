@@ -1,6 +1,6 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { increment } from '../../redux/action'
+// import { connect } from 'react-redux'
+// import { increment } from '../../redux/action'
 import { useEffect } from 'react'
 
 // const Counter = (props) => {

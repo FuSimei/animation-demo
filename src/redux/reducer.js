@@ -1,4 +1,4 @@
-import { INCREMENT, ADD_PERSON, DEL_PERSON } from './actionType'
+import { ADD_PERSON, DEL_PERSON } from './actionType'
 
 const defaultData = {
   count: 0,
